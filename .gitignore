@@ -1,0 +1,6 @@
+build/*
+!build/phpcs.xml
+!build/phpmd.xml
+vendor/*
+.idea/*
+.DS_Store
