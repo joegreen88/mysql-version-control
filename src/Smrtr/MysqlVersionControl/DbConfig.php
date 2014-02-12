@@ -18,6 +18,13 @@ class DbConfig
         return $config['environments'];
     }
 
+    public static function getTestingEnvironments()
+    {
+        $config = new \Zend_Config_Ini(self::getConfigFile(), 'environments');
+        $config = $config->toArray();
+        return $config['testing_environments'];
+    }
+
     public static function getPDO($env, $buildtime = false)
     {
         $key = $buildtime ? 'buildtime' : 'runtime';
