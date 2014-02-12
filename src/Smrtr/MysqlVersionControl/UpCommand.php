@@ -71,14 +71,12 @@ class UpCommand extends Command
         if ($buildConf->query("SHOW TABLES LIKE 'db_config'")->rowCount()) {
 
             $output->writeln('<info>Database version control is already installed.</info>');
-            self::$checkList['db-schema'] = true;
-            return true;
 
         } else {
 
             $output->writeln('Installing version control...');
 
-            $result = $buildConf->query(
+            $result = $buildConf->prepare(
 "CREATE TABLE `db_config`
 (
     `key` VARCHAR(50) COLLATE 'utf8_general_ci' NOT NULL,
@@ -88,8 +86,7 @@ class UpCommand extends Command
     PRIMARY KEY (`key`),
     UNIQUE INDEX `db_config_U_1` (`key`)
 ) ENGINE=MyISAM;"
-            )
-            ->execute();
+            )->execute();
 
             if (!$result) {
                 $output->writeln('<error>Installing version control failed.</error>');
@@ -234,7 +231,6 @@ class UpCommand extends Command
 
         if ($result) {
             $output->writeln('<info>Database updates installed successfully.</info>');
-            self::$checkList['db-update'] = true;
             return true;
 
         } else {
