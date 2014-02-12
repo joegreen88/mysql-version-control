@@ -31,7 +31,7 @@ class DbConfig
         $config = self::getConfig($env);
         $config = $config[$key];
 
-        $dsn = sprintf('mysql:host=%s;dbname=%s', $config['host'], $config['dbname']);
+        $dsn = sprintf('mysql:host=%s;dbname=%s', $config['host'], $config['database']);
         $db = new \PDO($dsn, $config['user'], $config['password']);
 
         return $db;
@@ -58,8 +58,8 @@ class DbConfig
 
     protected static function getProjectPath()
     {
-        $parts = explode('/vendor', __FILE__);
+        $parts = explode('vendor', __FILE__);
         array_pop($parts);
-        return implode('/vendor', $parts);
+        return trim(implode('vendor', $parts), '/\\');
     }
 }
