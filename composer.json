@@ -1,0 +1,22 @@
+{
+    "name": "smrtr/mysql-version-control",
+    "description": "A crude version control system for mysql written in php",
+    "keywords": ["database", "db", "mysql", "version control", "version", "migration", "update", "data", "structure"],
+    "bin": ["bin/mysql-version-control", "bin/mysql-version-control"],
+    "authors": [
+        {
+            "name": "Joe Green",
+            "email": "joe.green@smrtr.co.uk"
+        }
+    ],
+    "require": {
+        "symfony/console": "v2.3.6",
+        "symfony/process": "v2.3.7",
+        "hearstuk/zf1-component-config": "~1.1"
+    },
+    "autoload": {
+        "psr-0": {
+            "": "src/"
+        }
+    }
+}

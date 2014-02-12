@@ -1,0 +1,218 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "099509e82c8fe454be24a45d9b9e11ac",
+    "packages": [
+        {
+            "name": "hearstuk/zf1-component-config",
+            "version": "1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joegreen88/zf1-component-config.git",
+                "reference": "144959fee0ba098acb0a33e50a377ff90583161b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joegreen88/zf1-component-config/zipball/144959fee0ba098acb0a33e50a377ff90583161b",
+                "reference": "144959fee0ba098acb0a33e50a377ff90583161b",
+                "shasum": ""
+            },
+            "require": {
+                "hearstuk/zf1-components-base": "~1.2",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.20"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/Zend/Config.php"
+                ],
+                "psr-0": {
+                    "Zend_Config": "src/",
+                    "Tests\\Zend\\Config": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Joe Green",
+                    "email": "Joe.Green@hearst.co.uk"
+                }
+            ],
+            "description": "The Zend_Config component from Zend Framework 1.12 abstracted out for use with composer.",
+            "homepage": "http://github.com/joegreen88/zf1-component-config",
+            "time": "2013-09-19 16:12:46"
+        },
+        {
+            "name": "hearstuk/zf1-components-base",
+            "version": "1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joegreen88/zf1-components-base.git",
+                "reference": "b3833cd81ab01ccfacd8c34177b7f4e3032cd611"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joegreen88/zf1-components-base/zipball/b3833cd81ab01ccfacd8c34177b7f4e3032cd611",
+                "reference": "b3833cd81ab01ccfacd8c34177b7f4e3032cd611",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.20"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/Zend/Exception.php",
+                    "src/Zend/Loader.php",
+                    "src/Zend/Registry.php",
+                    "src/Zend/Version.php"
+                ],
+                "psr-0": {
+                    "Zend_Loader": "src/",
+                    "Tests\\Zend": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joe Green",
+                    "email": "Joe.Green@hearst.co.uk"
+                }
+            ],
+            "description": "Base files required for abstracted composer-compatible ZF1 components.",
+            "homepage": "http://github.com/joegreen88/zf1-components-base",
+            "time": "2013-09-19 16:03:57"
+        },
+        {
+            "name": "symfony/console",
+            "version": "v2.3.6",
+            "target-dir": "Symfony/Component/Console",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Console.git",
+                "reference": "f880062d56edefb25b36f2defa65aafe65959dc7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/f880062d56edefb25b36f2defa65aafe65959dc7",
+                "reference": "f880062d56edefb25b36f2defa65aafe65959dc7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/event-dispatcher": "~2.1"
+            },
+            "suggest": {
+                "symfony/event-dispatcher": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Console\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Console Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-09-25 06:04:15"
+        },
+        {
+            "name": "symfony/process",
+            "version": "v2.3.7",
+            "target-dir": "Symfony/Component/Process",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Process.git",
+                "reference": "82898108f79040314a7b3ba430a72c32c7f61d14"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/82898108f79040314a7b3ba430a72c32c7f61d14",
+                "reference": "82898108f79040314a7b3ba430a72c32c7f61d14",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Process\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Process Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-10-30 08:30:20"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": [
+
+    ],
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}
