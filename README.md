@@ -82,3 +82,7 @@ Run `vendor/bin/teardown <environment>` to tear down the tables on the given env
 
 This command is useful for development & testing developments where you may wish to, for example, tear down your
 database between test runs.
+
+Use the `confirm` option to bypass the confirmation prompt, e.g.
+
+    vendor/bin/teardown <environment> --confirm
