@@ -60,6 +60,6 @@ class DbConfig
     {
         $parts = explode('vendor', __FILE__);
         array_pop($parts);
-        return trim(implode('vendor', $parts), '/\\');
+        return rtrim(implode('vendor', $parts), '/\\');
     }
 }
