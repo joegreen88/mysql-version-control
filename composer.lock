@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "099509e82c8fe454be24a45d9b9e11ac",
+    "hash": "43f35944c1f6245b7ac27950b16ef975",
     "packages": [
         {
             "name": "hearstuk/zf1-component-config",
