@@ -34,12 +34,6 @@ class UpCommand extends Command
                 InputArgument::OPTIONAL,
                 'Where is the MySQL binary located?'
             )
-            ->addOption(
-                'confirm',
-                null,
-                InputOption::VALUE_NONE,
-                'If set, the command will bypass the confirmation prompt'
-            )
         ;
     }
 
