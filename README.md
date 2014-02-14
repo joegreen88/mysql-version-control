@@ -78,7 +78,7 @@ If this is the first run on the given environment, then a table called `db_confi
 current database version.
 
 ### teardown
-Run `vendor/bin/teardown <environment>` to tear down the database on the given environment.
+Run `vendor/bin/teardown <environment>` to tear down the tables on the given environment.
 
 This command is useful for development & testing developments where you may wish to, for example, tear down your
 database between test runs.
