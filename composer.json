@@ -11,8 +11,8 @@
         }
     ],
     "require": {
-        "symfony/console": "v2.3.6",
-        "symfony/process": "v2.3.7",
+        "symfony/console": "~2.3",
+        "symfony/process": "~2.5",
         "hearstuk/zf1-component-config": "~1.1"
     },
     "autoload": {
