@@ -34,6 +34,18 @@ class UpCommand extends Command
                 InputArgument::OPTIONAL,
                 'Where is the MySQL binary located?'
             )
+            ->addOption(
+                'no-schema',
+                null,
+                InputOption::VALUE_NONE,
+                'Skip execution of the schema files'
+            )
+            ->addOption(
+                'versions-path',
+                'p',
+                InputOption::VALUE_REQUIRED,
+                'Optional custom path to database versions directory'
+            )
         ;
     }
 
@@ -59,7 +71,7 @@ class UpCommand extends Command
 
         if (!$buildConf instanceof \PDO) {
             $output->writeln('<error>Failed: unable to obtain a database connection.</error>');
-            return false;
+            return 1;
         }
 
         if ($buildConf->query("SHOW TABLES LIKE 'db_config'")->rowCount()) {
@@ -84,13 +96,28 @@ class UpCommand extends Command
 
             if (!$result) {
                 $output->writeln('<error>Installing version control failed.</error>');
-                return false;
+                return 1;
             }
 
             $output->writeln('<info>Installed version control successfully.</info>');
         }
 
         // 2. Check for current version and available version
+
+        // what is the versions path?
+        if ($input->getOption('versions-path')) {
+            $versionsPath = $input->getOption('versions-path');
+        } else {
+            $versionsPath = realpath(dirname(__FILE__).'/../../../../../../db/versions');
+        }
+        if (!is_readable($versionsPath)) {
+            $output->writeln('<error>Versions path is not readable: '.$versionsPath.'</error>');
+            return 1;
+        }
+        if (!is_dir($versionsPath)) {
+            $output->writeln('<error>Versions path is not a directory: '.$versionsPath.'</error>');
+            return 1;
+        }
 
         // what is the current version?
         $query = $runConf->query("SELECT `value` FROM `db_config` WHERE `key`='version'");
@@ -100,19 +127,20 @@ class UpCommand extends Command
         } else {
             $currentVersion = 0;
         }
+        $output->writeln('Current version: '.$currentVersion);
 
         // what is the available version?
         $availableVersion = 0;
-        $versionsPath = realpath(dirname(__FILE__).'/../../../../../../db/versions');
         foreach (scandir($versionsPath) as $path) {
             if (preg_match("/^(\\d)+$/", $path) && (int) $path > $availableVersion) {
                 $availableVersion = (int) $path;
             }
         }
+        $output->writeln('Available version: '.$availableVersion);
 
         if ($currentVersion >= $availableVersion) {
             $output->writeln('<info>Database version is already up to date.</info>');
-            return true;
+            return 0;
         }
 
         $noun = ($availableVersion - $currentVersion > 1) ? 'updates' : 'update';
@@ -122,7 +150,9 @@ class UpCommand extends Command
 
         // go from current to latest version, building stack of SQL files
         $filesToLookFor = [];
-        $filesToLookFor[] = 'schema.sql';           // structural changes, alters, creates, drops
+        if (!$input->getOption('no-schema')) {
+            $filesToLookFor[] = 'schema.sql';       // structural changes, alters, creates, drops
+        }
         $filesToLookFor[] = 'data.sql';             // core data, inserts, replaces, updates, deletes
         if (in_array($this->env, DbConfig::getTestingEnvironments())) {
             $filesToLookFor[] = 'testing.sql';      // extra data on top of data.sql for the testing environment(s)
@@ -225,11 +255,11 @@ class UpCommand extends Command
 
         if ($result) {
             $output->writeln('<info>Database updates installed successfully.</info>');
-            return true;
+            return 0;
 
         } else {
             $output->writeln('<error>Installing database updates failed.</error>');
-            return false;
+            return 1;
         }
     }
 }
