@@ -154,17 +154,6 @@ class UpCommand extends Command
         }
         $output->writeln('Available version: '.$availableVersion);
 
-        if ($currentVersion >= $availableVersion) {
-            $output->writeln('<info>Database version is already up to date.</info>');
-            return 0;
-        }
-
-        $noun = ($availableVersion - $currentVersion > 1) ? 'updates' : 'update';
-        $output->writeln(
-            "Installing database $noun (Current version: $currentVersion, Available version: $availableVersion)..."
-        );
-
-        // go from current to latest version, building stack of SQL files
         $filesToLookFor = [];
         if (!$input->getOption('no-schema')) {
             $filesToLookFor[] = 'schema.sql';       // structural changes, alters, creates, drops
@@ -176,23 +165,25 @@ class UpCommand extends Command
         $filesToLookFor[] = 'runme.php';            // custom php hook
 
         $stack = array();
-        for ($i = $currentVersion + 1; $i <= $availableVersion; $i++) {
+        if ($currentVersion < $availableVersion) {
+            for ($i = $currentVersion + 1; $i <= $availableVersion; $i++) {
 
-            $path = $versionsPath.DIRECTORY_SEPARATOR.$i;
-            if (!is_dir($path) || !is_readable($path)) {
-                continue;
-            }
+                $path = $versionsPath.DIRECTORY_SEPARATOR.$i;
+                if (!is_dir($path) || !is_readable($path)) {
+                    continue;
+                }
 
-            foreach ($filesToLookFor as $file) {
-                if (is_readable($path.DIRECTORY_SEPARATOR.$file) && is_file($path.DIRECTORY_SEPARATOR.$file)) {
-                    $stack[$i][$file] = $path.DIRECTORY_SEPARATOR.$file;
+                foreach ($filesToLookFor as $file) {
+                    if (is_readable($path.DIRECTORY_SEPARATOR.$file) && is_file($path.DIRECTORY_SEPARATOR.$file)) {
+                        $stack[$i][$file] = $path.DIRECTORY_SEPARATOR.$file;
+                    }
                 }
             }
         }
 
         // Look for a provisional version?
-
-        if (($provisionalVersion = $input->getOption('install-provisional-version'))) {
+        $provisionalVersion = $input->getOption('install-provisional-version');
+        if ($provisionalVersion) {
 
             if (!is_string($provisionalVersion)) {
                 $provisionalVersion = self::DEFAULT_PROVISIONAL_VERSION_NAME;
@@ -208,6 +199,21 @@ class UpCommand extends Command
                 }
             }
         }
+
+        $updates = count($stack);
+        if (!$updates) {
+            $output->writeln('<info>Database version is already up to date.</info>');
+            return 0;
+        }
+
+        $noun = ($updates > 1) ? 'updates' : 'update';
+        $report = "Current version: $currentVersion, Available version: $availableVersion";
+        if (is_string($provisionalVersion) && array_key_exists($provisionalVersion, $stack)) {
+            $report .= ", Provisional version: $provisionalVersion";
+        }
+        $output->writeln(
+            "Installing database $noun ($report)..."
+        );
 
         $s = '\\' == DIRECTORY_SEPARATOR ? "%s" : "'%s'"; // Windows doesn't like quoted params
         $cmdMySQL = "$mysqlbin -h $s --user=$s --password=$s --database=$s < %s";
