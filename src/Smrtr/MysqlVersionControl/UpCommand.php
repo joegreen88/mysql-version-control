@@ -57,10 +57,15 @@ class UpCommand extends Command
             ->addOption(
                 'install-provisional-version',
                 null,
-                InputOption::VALUE_OPTIONAL,
-                'Install a provisional version which may still be in development and is not final. '.PHP_EOL.
-                'The provisional version is in a dir named \''.self::DEFAULT_PROVISIONAL_VERSION_NAME.'\' by default; '.
-                PHP_EOL.'provide a value for this option to override the dirname.'
+                InputOption::VALUE_NONE,
+                'Install a provisional version which may still be in development and is not final.'
+            )
+            ->addOption(
+                'provisional-version',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The name of the provisional version',
+                static::DEFAULT_PROVISIONAL_VERSION_NAME
             )
         ;
     }
@@ -99,7 +104,7 @@ class UpCommand extends Command
             $output->writeln('Installing version control...');
 
             $result = $buildConf->prepare(
-"CREATE TABLE `db_config`
+                "CREATE TABLE `db_config`
 (
     `key` VARCHAR(50) COLLATE 'utf8_general_ci' NOT NULL,
     `value` TEXT,
@@ -182,20 +187,17 @@ class UpCommand extends Command
         }
 
         // Look for a provisional version?
-        $provisionalVersion = $input->getOption('install-provisional-version');
-        if ($provisionalVersion) {
+        $provisionalVersion = null;
+        if ($input->getOption('install-provisional-version')) {
 
-            if (!is_string($provisionalVersion)) {
-                $provisionalVersion = self::DEFAULT_PROVISIONAL_VERSION_NAME;
-            }
-
+            $provisionalVersion = $input->getOption('provisional-version');
             $output->writeln('Provisional version: '.$provisionalVersion);
 
             $path = $versionsPath.DIRECTORY_SEPARATOR.$provisionalVersion;
             if (is_readable($path) && is_dir($path)) {
 
                 foreach ($filesToLookFor as $file) {
-                    if (is_readable($file.DIRECTORY_SEPARATOR.$file) && is_file($path.DIRECTORY_SEPARATOR.$file)) {
+                    if (is_readable($path.DIRECTORY_SEPARATOR.$file) && is_file($path.DIRECTORY_SEPARATOR.$file)) {
                         $stack[$provisionalVersion][$file] = $path.DIRECTORY_SEPARATOR.$file;
                     }
                 }
@@ -275,7 +277,7 @@ class UpCommand extends Command
                 }
             }
 
-            if ($result) {
+            if ($result && is_int($version)) {
                 $result = $buildConf->query(
                     "REPLACE INTO `db_config` (`key`, `value`, `updated_at`) VALUES ('version', $version, now())"
                 )->execute();
