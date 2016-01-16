@@ -34,6 +34,12 @@ class UpCommand extends Command
                 InputArgument::OPTIONAL,
                 'Where is the MySQL binary located?'
             )
+            ->addOption(
+                'no-schema',
+                null,
+                InputOption::VALUE_NONE,
+                'Skip execution of the schema files'
+            )
         ;
     }
 
@@ -122,7 +128,9 @@ class UpCommand extends Command
 
         // go from current to latest version, building stack of SQL files
         $filesToLookFor = [];
-        $filesToLookFor[] = 'schema.sql';           // structural changes, alters, creates, drops
+        if (!$input->getOption('no-schema')) {
+            $filesToLookFor[] = 'schema.sql';       // structural changes, alters, creates, drops
+        }
         $filesToLookFor[] = 'data.sql';             // core data, inserts, replaces, updates, deletes
         if (in_array($this->env, DbConfig::getTestingEnvironments())) {
             $filesToLookFor[] = 'testing.sql';      // extra data on top of data.sql for the testing environment(s)
