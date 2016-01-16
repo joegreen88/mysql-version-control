@@ -56,7 +56,7 @@ class UpCommand extends Command
             )
             ->addOption(
                 'install-provisional-version',
-                'p',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'Install a provisional version which may still be in development and is not final. '.PHP_EOL.
                 'The provisional version is in a dir named \''.self::DEFAULT_PROVISIONAL_VERSION_NAME.'\' by default; '.
