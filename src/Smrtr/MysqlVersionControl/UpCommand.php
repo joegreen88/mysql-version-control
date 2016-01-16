@@ -16,6 +16,14 @@ use Symfony\Component\Process\Process;
  */
 class UpCommand extends Command
 {
+    /**
+     * @var string
+     */
+    const DEFAULT_PROVISIONAL_VERSION_NAME = 'new';
+
+    /**
+     * @var string
+     */
     protected $env;
 
     public function __construct($env)
@@ -45,6 +53,14 @@ class UpCommand extends Command
                 'p',
                 InputOption::VALUE_REQUIRED,
                 'Optional custom path to database versions directory'
+            )
+            ->addOption(
+                'install-provisional-version',
+                'p',
+                InputOption::VALUE_OPTIONAL,
+                'Install a provisional version which may still be in development and is not final. '.PHP_EOL.
+                'The provisional version is in a dir named \''.self::DEFAULT_PROVISIONAL_VERSION_NAME.'\' by default; '.
+                PHP_EOL.'provide a value for this option to override the dirname.'
             )
         ;
     }
@@ -168,8 +184,27 @@ class UpCommand extends Command
             }
 
             foreach ($filesToLookFor as $file) {
-                if (is_readable($path.DIRECTORY_SEPARATOR.$file)) {
+                if (is_readable($path.DIRECTORY_SEPARATOR.$file) && is_file($path.DIRECTORY_SEPARATOR.$file)) {
                     $stack[$i][$file] = $path.DIRECTORY_SEPARATOR.$file;
+                }
+            }
+        }
+
+        // Look for a provisional version?
+
+        if (($provisionalVersion = $input->getOption('install-provisional-version'))) {
+
+            if (!is_string($provisionalVersion)) {
+                $provisionalVersion = self::DEFAULT_PROVISIONAL_VERSION_NAME;
+            }
+
+            $path = $versionsPath.DIRECTORY_SEPARATOR.$provisionalVersion;
+            if (is_readable($path) && is_dir($path)) {
+
+                foreach ($filesToLookFor as $file) {
+                    if (is_readable($file.DIRECTORY_SEPARATOR.$file) && is_file($path.DIRECTORY_SEPARATOR.$file)) {
+                        $stack[$provisionalVersion][$file] = $path.DIRECTORY_SEPARATOR.$file;
+                    }
                 }
             }
         }
