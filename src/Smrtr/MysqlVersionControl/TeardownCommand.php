@@ -27,7 +27,7 @@ class TeardownCommand extends Command
     {
         $this
             ->setName($this->env)
-            ->setDescription('Install the '.$this->env.' versions')
+            ->setDescription('Tear down the '.$this->env.' database tables')
             ->addArgument(
                 'mysqlbin',
                 InputArgument::OPTIONAL,
