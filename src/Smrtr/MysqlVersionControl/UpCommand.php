@@ -40,6 +40,12 @@ class UpCommand extends Command
                 InputOption::VALUE_NONE,
                 'Skip execution of the schema files'
             )
+            ->addOption(
+                'versions-path',
+                'p',
+                InputOption::VALUE_REQUIRED,
+                'Optional custom path to database versions directory'
+            )
         ;
     }
 
@@ -98,6 +104,21 @@ class UpCommand extends Command
 
         // 2. Check for current version and available version
 
+        // what is the versions path?
+        if ($input->getOption('versions-path')) {
+            $versionsPath = $input->getOption('versions-path');
+        } else {
+            $versionsPath = realpath(dirname(__FILE__).'/../../../../../../db/versions');
+        }
+        if (!is_readable($versionsPath)) {
+            $output->writeln('<error>Versions path is not readable: '.$versionsPath.'</error>');
+            return 1;
+        }
+        if (!is_dir($versionsPath)) {
+            $output->writeln('<error>Versions path is not a directory: '.$versionsPath.'</error>');
+            return 1;
+        }
+
         // what is the current version?
         $query = $runConf->query("SELECT `value` FROM `db_config` WHERE `key`='version'");
         if ($query->rowCount()) {
@@ -106,15 +127,16 @@ class UpCommand extends Command
         } else {
             $currentVersion = 0;
         }
+        $output->writeln('Current version: '.$currentVersion);
 
         // what is the available version?
         $availableVersion = 0;
-        $versionsPath = realpath(dirname(__FILE__).'/../../../../../../db/versions');
         foreach (scandir($versionsPath) as $path) {
             if (preg_match("/^(\\d)+$/", $path) && (int) $path > $availableVersion) {
                 $availableVersion = (int) $path;
             }
         }
+        $output->writeln('Available version: '.$availableVersion);
 
         if ($currentVersion >= $availableVersion) {
             $output->writeln('<info>Database version is already up to date.</info>');

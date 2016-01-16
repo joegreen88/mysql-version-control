@@ -55,8 +55,9 @@ respectively. Each configuration requires a `host`, `user`, `password` and `data
     buildtime.database = "buzz"
 
 ## Versioning
-Your database versions will be stored in `<project_root>/db/versions`. The sql for each version is stored in a directory
-directly under this directory. So the directories are named `db/versions/1`, `db/versions/2` and so on.
+Your database versions will be stored in `<project_root>/db/versions` by default.
+The sql for each version is stored in a directory directly under this directory.
+So the directories are named `db/versions/1`, `db/versions/2` and so on.
 Each version must contain at least one of the following files:
 
  - `schema.sql` - always runs first, contains `CREATE TABLE IF NOT EXISTS` and `ALTER` statements.
@@ -79,6 +80,9 @@ current database version.
 
 You can use the flag `--no-schema` to skip the schema files. This can be useful if you use an ORM to build the database
 schema.
+
+You can also use the option `--versions-path`, or `-p` for short, to provide a custom versions path.
+This allows you to override the default versions path which is `<project_root>/db/versions`.
 
 ### teardown
 Run `vendor/bin/teardown <environment>` to tear down the tables on the given environment.
