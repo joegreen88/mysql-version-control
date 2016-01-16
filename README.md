@@ -78,11 +78,20 @@ from the current version.
 If this is the first run on the given environment, then a table called `db_config` is created and used to store the
 current database version.
 
-You can use the flag `--no-schema` to skip the schema files. This can be useful if you use an ORM to build the database
-schema.
+#### `--no-schema`
+Use this flag to skip the schema files. This can be useful if you use an ORM to build the database schema.
 
-You can also use the option `--versions-path`, or `-p` for short, to provide a custom versions path.
+#### `--versions-path`
+Use this option, or `-p` for short, to provide a custom path to your versions.
 This allows you to override the default versions path which is `<project_root>/db/versions`.
+
+#### `--install-provisional-version`
+Use this flag to install a provisional version. This allows you to test out your database version, which may currently
+be in development, before you commit to it by giving it a version number. This command looks for your provisional
+version in `<project_root>/db/versions/new` by default.
+
+#### `--provisional-version`
+Use this option to provide a custom path to your provisional version. Your custom path is relative to the versions path.
 
 ### teardown
 Run `vendor/bin/teardown <environment>` to tear down the tables on the given environment.
