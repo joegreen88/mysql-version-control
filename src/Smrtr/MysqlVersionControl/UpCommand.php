@@ -65,7 +65,7 @@ class UpCommand extends Command
 
         if (!$buildConf instanceof \PDO) {
             $output->writeln('<error>Failed: unable to obtain a database connection.</error>');
-            return false;
+            return 1;
         }
 
         if ($buildConf->query("SHOW TABLES LIKE 'db_config'")->rowCount()) {
@@ -90,7 +90,7 @@ class UpCommand extends Command
 
             if (!$result) {
                 $output->writeln('<error>Installing version control failed.</error>');
-                return false;
+                return 1;
             }
 
             $output->writeln('<info>Installed version control successfully.</info>');
@@ -118,7 +118,7 @@ class UpCommand extends Command
 
         if ($currentVersion >= $availableVersion) {
             $output->writeln('<info>Database version is already up to date.</info>');
-            return true;
+            return 0;
         }
 
         $noun = ($availableVersion - $currentVersion > 1) ? 'updates' : 'update';
@@ -233,11 +233,11 @@ class UpCommand extends Command
 
         if ($result) {
             $output->writeln('<info>Database updates installed successfully.</info>');
-            return true;
+            return 0;
 
         } else {
             $output->writeln('<error>Installing database updates failed.</error>');
-            return false;
+            return 1;
         }
     }
 }

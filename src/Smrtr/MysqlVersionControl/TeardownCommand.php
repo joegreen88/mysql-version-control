@@ -68,7 +68,7 @@ class TeardownCommand extends Command
                 false
             );
             if (!$answer) {
-                exit;
+                return 0;
             }
         }
 
@@ -76,6 +76,8 @@ class TeardownCommand extends Command
             $con->exec("DROP TABLE IF EXISTS `$table`");
             $output->writeln("Dropped table $table");
         }
+
+        return 0;
     }
 
 }
