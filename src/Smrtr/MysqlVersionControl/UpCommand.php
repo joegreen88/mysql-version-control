@@ -189,6 +189,8 @@ class UpCommand extends Command
                 $provisionalVersion = self::DEFAULT_PROVISIONAL_VERSION_NAME;
             }
 
+            $output->writeln('Provisional version: '.$provisionalVersion);
+
             $path = $versionsPath.DIRECTORY_SEPARATOR.$provisionalVersion;
             if (is_readable($path) && is_dir($path)) {
 
