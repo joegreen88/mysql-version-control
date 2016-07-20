@@ -2,7 +2,7 @@
 
 namespace Smrtr\MysqlVersionControl;
 
-use Smrtr\MysqlVersionControl\DbConfigAdapter\DbConfigAdapterInterface;
+use Smrtr\MysqlVersionControl\DbConfigAdapter\ConfigAdapterInterface;
 use Smrtr\MysqlVersionControl\DbConfigAdapter\Ini;
 
 /**
@@ -18,18 +18,18 @@ use Smrtr\MysqlVersionControl\DbConfigAdapter\Ini;
 class DbConfig
 {
     /**
-     * @var DbConfigAdapterInterface|null
+     * @var ConfigAdapterInterface|null
      */
     protected static $adapter;
 
     /**
      * Set the database configuration adapter.
      *
-     * @param DbConfigAdapterInterface $adapter
+     * @param ConfigAdapterInterface $adapter
      *
      * @return null
      */
-    public static function setAdapter(DbConfigAdapterInterface $adapter)
+    public static function setAdapter(ConfigAdapterInterface $adapter)
     {
         static::$adapter = $adapter;
         return null;
@@ -38,7 +38,7 @@ class DbConfig
     /**
      * Get the database configuration adapter.
      *
-     * @return DbConfigAdapterInterface
+     * @return ConfigAdapterInterface
      */
     public static function getAdapter()
     {
