@@ -67,7 +67,7 @@ The files are run in the order specified above.
 This package will put a CLI script called *smyver* into your project's `vendor/bin` directory.
 
 ### up
-Run `vendor/bin/smyver up <environment>` to install or update the database on the given environment.
+Run `vendor/bin/smyver.php up <environment>` to install or update the database on the given environment.
 This command looks at the available versions in the `db/versions` directory and applies new versions sequentially
 from the current version.
 
@@ -90,11 +90,11 @@ version in `<project_root>/db/versions/new` by default.
 Use this option to provide a custom path to your provisional version. Your custom path is relative to the versions path.
 
 ### teardown
-Run `vendor/bin/smyver teardown <environment>` to tear down the tables on the given environment.
+Run `vendor/bin/smyver.php teardown <environment>` to tear down the tables on the given environment.
 
 This command is useful for development & testing developments where you may wish to, for example, tear down your
 database between test runs.
 
 Use the `confirm` option to bypass the confirmation prompt, e.g.
 
-    vendor/bin/teardown <environment> --confirm
+    vendor/bin/smyver.php <environment> --confirm

@@ -2,7 +2,7 @@
     "name": "smrtr/mysql-version-control",
     "description": "A crude version control system for mysql written in php",
     "keywords": ["database", "db", "mysql", "version control", "version", "migration", "update", "data", "structure"],
-    "bin": ["bin/up", "bin/teardown"],
+    "bin": ["bin/up", "bin/teardown", "bin/smyver.php"],
     "license": "MIT",
     "authors": [
         {
