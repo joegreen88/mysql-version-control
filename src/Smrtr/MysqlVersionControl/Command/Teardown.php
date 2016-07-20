@@ -6,15 +6,15 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Smrtr\MysqlVersionControl\Receiver\Up as UpReceiver;
+use Smrtr\MysqlVersionControl\Receiver\Teardown as TeardownReceiver;
 
 /**
- * Class Up is a symfony console command that updates the database to the latest version.
- * 
+ * Class Teardown is a symfony console command that removes all tables from the database for the given environment.
+ *
  * @package Smrtr\MysqlVersionControl\Command
  * @author Joe Green <joe.green@smrtr.co.uk>
  */
-class Up extends Command
+class Teardown extends Command
 {
     use CommonParametersTrait;
 
@@ -37,32 +37,18 @@ class Up extends Command
         $this
             ->addEnvironmentArgument()
             ->addMysqlBinArgument()
-            ->addVersionsPathOption()
             ->addOption(
-                'no-schema',
+                'confirm',
                 null,
                 InputOption::VALUE_NONE,
-                'Skip execution of the schema files'
-            )
-            ->addOption(
-                'install-provisional-version',
-                null,
-                InputOption::VALUE_NONE,
-                'Install a provisional version which may still be in development and is not final.'
-            )
-            ->addOption(
-                'provisional-version',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The name of the provisional version',
-                static::DEFAULT_PROVISIONAL_VERSION_NAME
+                'If set, the command will bypass the confirmation prompt'
             )
         ;
 
         // Name & description
         $this
-            ->setName("up")
-            ->setDescription('Install the latest database versions on the given environment')
+            ->setName("teardown")
+            ->setDescription('Tear down the database tables from the given environment')
         ;
     }
 
@@ -76,15 +62,11 @@ class Up extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $receiver = new UpReceiver();
+        $receiver = new TeardownReceiver();
         return $receiver->execute(
             $output,
             $input->getArgument('env'),
-            $input->getArgument('mysqlbin'),
-            $input->getOption('versions-path'),
-            $input->getOption('no-schema'),
-            $input->getOption('install-provisional-version'),
-            $input->getOption('provisional-version')
+            $input->getOption('confirm')
         );
     }
 }
