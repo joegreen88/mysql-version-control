@@ -1,6 +1,7 @@
 <?php
 
 namespace Smrtr\MysqlVersionControl\DbConfigAdapter;
+
 use Smrtr\MysqlVersionControlException;
 
 /**
@@ -51,7 +52,7 @@ use Smrtr\MysqlVersionControlException;
  * @package Smrtr\MysqlVersionControl\DbConfigAdapter
  * @author Joe Green <joe.green@smrtr.co.uk>
  */
-class PhpArray implements DbConfigAdapterInterface
+class PhpArray implements ConfigAdapterInterface
 {
     /**
      * @var array|null This array holds the entire database configuration data

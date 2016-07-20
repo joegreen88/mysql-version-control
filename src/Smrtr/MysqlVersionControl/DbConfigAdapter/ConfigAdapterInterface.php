@@ -10,7 +10,7 @@ namespace Smrtr\MysqlVersionControl\DbConfigAdapter;
  * @package Smrtr\MysqlVersionControl\DbConfigAdapter
  * @author Joe Green <joe.green@smrtr.co.uk>
  */
-interface DbConfigAdapterInterface
+interface ConfigAdapterInterface
 {
     /**
      * Get a list of all environments.

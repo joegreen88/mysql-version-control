@@ -1,7 +1,7 @@
-mysql-version-control
-=====================
+smyver
+======
 
-A crude version control system for a mysql database. Install by running
+**S**mrtr **My**sql **Ver**sion control is a version control system for a mysql database. Install by running
 `composer require smrtr/mysql-version-control:~1.0`.
 
 ## Configuration
@@ -64,10 +64,10 @@ Each version must contain at least one of the following files:
 The files are run in the order specified above.
 
 ## Usage
-This package will put two CLI scripts into your project's `vendor/bin` directory.
+This package will put a CLI script called *smyver* into your project's `vendor/bin` directory.
 
 ### up
-Run `vendor/bin/up <environment>` to install or update the database on the given environment.
+Run `vendor/bin/smyver up <environment>` to install or update the database on the given environment.
 This command looks at the available versions in the `db/versions` directory and applies new versions sequentially
 from the current version.
 
@@ -90,7 +90,7 @@ version in `<project_root>/db/versions/new` by default.
 Use this option to provide a custom path to your provisional version. Your custom path is relative to the versions path.
 
 ### teardown
-Run `vendor/bin/teardown <environment>` to tear down the tables on the given environment.
+Run `vendor/bin/smyver teardown <environment>` to tear down the tables on the given environment.
 
 This command is useful for development & testing developments where you may wish to, for example, tear down your
 database between test runs.

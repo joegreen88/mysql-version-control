@@ -45,7 +45,7 @@ use Smrtr\MysqlVersionControlException;
  * @package Smrtr\MysqlVersionControl\DbConfigAdapter
  * @author Joe Green <joe.green@smrtr.co.uk>
  */
-class Ini implements DbConfigAdapterInterface
+class Ini implements ConfigAdapterInterface
 {
     /**
      * @var string The template for the file path of the default config file.
