@@ -78,6 +78,7 @@ class Up extends Command
     {
         $receiver = new UpReceiver();
         return $receiver->execute(
+            $input,
             $output,
             $input->getArgument('env'),
             $input->getArgument('mysqlbin'),

@@ -3,11 +3,15 @@
 namespace Smrtr\MysqlVersionControl\Receiver;
 
 use Smrtr\MysqlVersionControl\DbConfig;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class Teardown
 {
     public function execute(
+        InputInterface $input,
         OutputInterface $output,
         $env,
         $confirm = false
@@ -21,16 +25,11 @@ class Teardown
             $tables[] = array_shift($row);
         }
 
-
         if (!$confirm) {
-            $dialogue = $this->getHelperSet()->get('dialog');
             $tableCount = count($tables);
-            $answer = $dialogue->askConfirmation(
-                $output,
-                "<question>Tear down $tableCount tables(y/n)?</question>",
-                false
-            );
-            if (!$answer) {
+            $questionHelper = new QuestionHelper;
+            $question = new ConfirmationQuestion("<question>Tear down $tableCount tables(y/n)?</question>", false);
+            if (!$questionHelper->ask($input, $output, $question)) {
                 return 0;
             }
         }

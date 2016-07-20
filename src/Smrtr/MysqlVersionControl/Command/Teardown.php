@@ -64,6 +64,7 @@ class Teardown extends Command
     {
         $receiver = new TeardownReceiver();
         return $receiver->execute(
+            $input,
             $output,
             $input->getArgument('env'),
             $input->getOption('confirm')

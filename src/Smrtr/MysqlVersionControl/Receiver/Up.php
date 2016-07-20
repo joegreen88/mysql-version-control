@@ -3,6 +3,7 @@
 namespace Smrtr\MysqlVersionControl\Receiver;
 
 use Smrtr\MysqlVersionControl\DbConfig;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
@@ -22,6 +23,7 @@ use Symfony\Component\Process\Process;
 class Up
 {
     public function execute(
+        InputInterface $input,
         OutputInterface $output,
         $env,
         $mysqlBin = 'mysql',
