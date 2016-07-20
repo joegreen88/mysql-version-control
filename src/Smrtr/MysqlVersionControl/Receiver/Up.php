@@ -32,8 +32,8 @@ class Up
         $installProvisionalVersion = false,
         $provisionalVersion = 'new'
     ) {
-        $buildConf = DbConfig::getPDO($env, true);
-        $runConf = DbConfig::getPDO($env);
+        $buildConn = DbConfig::getPDO($env, true);
+        $runConn = DbConfig::getPDO($env);
 
         // 1. Make sure that db_config table is present
 
@@ -42,12 +42,12 @@ class Up
         $output->writeln('');
 
 
-        if (!$buildConf instanceof \PDO) {
+        if (!$buildConn instanceof \PDO) {
             $output->writeln('<error>Failed: unable to obtain a database connection.</error>');
             return 1;
         }
 
-        if ($buildConf->query("SHOW TABLES LIKE 'db_config'")->rowCount()) {
+        if ($buildConn->query("SHOW TABLES LIKE 'db_config'")->rowCount()) {
 
             $output->writeln('<info>Database version control is already installed.</info>');
 
@@ -55,7 +55,7 @@ class Up
 
             $output->writeln('Installing version control...');
 
-            $result = $buildConf->prepare(
+            $result = $buildConn->prepare(
                 "CREATE TABLE `db_config`
 (
     `key` VARCHAR(50) COLLATE 'utf8_general_ci' NOT NULL,
@@ -91,7 +91,7 @@ class Up
         }
 
         // what is the current version?
-        $query = $runConf->query("SELECT `value` FROM `db_config` WHERE `key`='version'");
+        $query = $runConn->query("SELECT `value` FROM `db_config` WHERE `key`='version'");
         if ($query->rowCount()) {
             $versionRow = $query->fetch(\PDO::FETCH_ASSOC);
             $currentVersion = (int) $versionRow['value'];
@@ -168,7 +168,6 @@ class Up
         );
 
         $s = '\\' == DIRECTORY_SEPARATOR ? "%s" : "'%s'"; // Windows doesn't like quoted params
-        $cmdMySQL = "$mysqlBin -h $s --user=$s --password=$s --database=$s < %s";
 
         // loop sql file stack and execute on mysql CLI
 
@@ -196,8 +195,15 @@ class Up
                 $user = $conf['user'];
                 $pass = $conf['password'];
                 $name = $conf['database'];
+                $port = isset($conf['port']) ? $conf['port'] : null;
 
                 if ('.sql' === substr($file, -4)) {
+
+                    $cmdMySQL = "$mysqlBin -h $s --user=$s --password=$s --database=$s";
+                    if ($port) {
+                        $cmdMySQL .= " --port=". (int) $port;
+                    }
+                    $cmdMySQL .= " < %s";
 
                     $command = sprintf(
                         $cmdMySQL,
@@ -226,7 +232,7 @@ class Up
             }
 
             if ($result && is_int($version)) {
-                $result = $buildConf->query(
+                $result = $buildConn->query(
                     "REPLACE INTO `db_config` (`key`, `value`, `updated_at`) VALUES ('version', $version, now())"
                 )->execute();
             }
