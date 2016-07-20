@@ -2,7 +2,7 @@
     "name": "smrtr/mysql-version-control",
     "description": "A crude version control system for mysql written in php",
     "keywords": ["database", "db", "mysql", "version control", "version", "migration", "update", "data", "structure"],
-    "bin": ["bin/up", "bin/teardown"],
+    "bin": ["bin/up", "bin/teardown", "bin/smyver.php"],
     "license": "MIT",
     "authors": [
         {
@@ -11,8 +11,8 @@
         }
     ],
     "require": {
-        "symfony/console": "~2.3",
-        "symfony/process": "~2.5",
+        "symfony/console": "~2.7",
+        "symfony/process": "~2.7",
         "hearstuk/zf1-component-config": "~1.1"
     },
     "autoload": {
