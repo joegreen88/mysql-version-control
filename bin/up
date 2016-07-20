@@ -2,4 +2,4 @@
 
 this_dir="$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-php "$this_dir/symver.php" up "$@"
+php "$this_dir/smyver.php" up "$@"
