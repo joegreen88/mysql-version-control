@@ -1,6 +1,6 @@
 <?php
 
-namespace Smrtr\MysqlVersionControl\Command;
+namespace Smrtr\MysqlVersionControl\Command\Parameters;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -33,7 +33,7 @@ trait CommonParametersTrait
     protected function addMysqlBinArgument()
     {
         return $this->addArgument(
-            'mysqlbin',
+            'mysql-bin',
             InputArgument::OPTIONAL,
             'Where is the MySQL binary located?'
         );

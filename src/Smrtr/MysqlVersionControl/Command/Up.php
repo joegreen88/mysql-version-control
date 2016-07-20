@@ -2,11 +2,14 @@
 
 namespace Smrtr\MysqlVersionControl\Command;
 
+use Smrtr\MysqlVersionControl\Command\Parameters\CommonParametersTrait;
+use Smrtr\MysqlVersionControl\ComposerParams;
+use Smrtr\MysqlVersionControl\Receiver\Up as UpReceiver;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Smrtr\MysqlVersionControl\Receiver\Up as UpReceiver;
 
 /**
  * Class Up is a symfony console command that updates the database to the latest version.
@@ -76,7 +79,7 @@ class Up extends Command
             $input,
             $output,
             $input->getArgument('env'),
-            $input->getArgument('mysqlbin'),
+            $input->getArgument('mysql-bin'),
             $input->getOption('versions-path'),
             $input->getOption('no-schema'),
             $input->getOption('install-provisional-version'),
