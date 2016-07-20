@@ -3,10 +3,18 @@ Changelog
 
 ## 1.3.0 (wip)
 
+### General Improvements
+
  - Bundle all commands into single script smyver.php
- - Refactor: implemented the command pattern
- - Refactor: implemented the configuration adapter pattern with Ini and PhpArray adapters
  - Added port configuration option
+ - Refactor: implemented the command pattern
+ - Refactor: implemented the configuration adapter pattern
+
+### Configuration adapters:
+
+ - Ini (the default adapter)
+ - PhpArray
+ - PhpFile
 
 ## 1.2.0
 
