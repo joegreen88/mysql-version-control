@@ -72,7 +72,8 @@ class DbConfig
      * Get the database configurations for the given environment.
      *
      * Returns an array with keys 'buildtime' and 'runtime',
-     * where both elements are themselves arrays of database config with keys 'host', 'database', 'user', 'password'.
+     * where both elements are themselves arrays of database config
+     * with keys 'host', 'database', 'user', 'password', 'port'.
      *
      * @param string $env The name of the environment
      *
@@ -97,7 +98,12 @@ class DbConfig
         $config = static::getConfig($env);
         $config = $config[$key];
 
-        $dsn = sprintf('mysql:host=%s;dbname=%s', $config['host'], $config['database']);
+        $dsn = sprintf("mysql:host=%s", $config["host"]);
+        if (isset($config["port"]) && $config["port"]) {
+            $dsn .= sprintf(";port=%s", $config["port"]);
+        }
+        $dsn .= sprintf(";dbname=%s", $config["database"]);
+
         $db = new \PDO($dsn, $config['user'], $config['password']);
 
         return $db;

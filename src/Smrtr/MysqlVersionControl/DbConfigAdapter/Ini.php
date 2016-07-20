@@ -24,22 +24,26 @@ use Smrtr\MysqlVersionControlException;
  * runtime.user = "buzz"
  * runtime.password = "lightyear"
  * runtime.database = "buzz"
- * 
+ * runtime.port = 3306
+ *
  * buildtime.host = "localhost"
  * buildtime.user = "buzz"
  * buildtime.password = "lightyear"
  * buildtime.database = "buzz"
+ * buildtime.port = 3306
  * 
  * [production]
  * runtime.host = "localhost"
  * runtime.user = "root"
  * runtime.password = "root"
  * runtime.database = "buzz"
+ * runtime.port = 3306
  * 
  * buildtime.host = "localhost"
  * buildtime.user = "buzz"
  * buildtime.password = "lightyear"
  * buildtime.database = "buzz"
+ * buildtime.port = 3306
  * ```
  *
  * @package Smrtr\MysqlVersionControl\DbConfigAdapter

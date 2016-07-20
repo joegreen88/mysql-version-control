@@ -21,12 +21,14 @@ use Smrtr\MysqlVersionControlException;
  *       'database' => '',
  *       'user' => '',
  *       'password' => '',
+ *       'port' => '',
  *     ],
  *     'runtime' => [
  *       'host' => '',
  *       'database' => '',
  *       'user' => '',
  *       'password' => '',
+ *       'port' => '',
  *     ],
  *   ],
  *   'B' => [
@@ -35,12 +37,14 @@ use Smrtr\MysqlVersionControlException;
  *       'database' => '',
  *       'user' => '',
  *       'password' => '',
+ *       'port' => '',
  *     ],
  *     'runtime' => [
  *       'host' => '',
  *       'database' => '',
  *       'user' => '',
  *       'password' => '',
+ *       'port' => '',
  *     ],
  *   ],
  * ]
