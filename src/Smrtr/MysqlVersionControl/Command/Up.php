@@ -74,6 +74,9 @@ class Up extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $composerParams = new ComposerParams;
+        $composerParams->applyComposerParams($this, $input);
+
         $receiver = new UpReceiver();
         return $receiver->execute(
             $input,
