@@ -1,12 +1,8 @@
 mysql-version-control
 =====================
 
-A crude version control system for a mysql database.
-
-## Installation
-Use composer.
-Add `"smrtr/mysql-version-control": "~1.0"` to the `requires` section of your project's composer.json then run
-`composer update`.
+A crude version control system for a mysql database. Install by running
+`composer require smrtr/mysql-version-control:~1.0`.
 
 ## Configuration
 Your database configuration will be stored at `<project_root>/db/db.ini`. In this file you will define a list of

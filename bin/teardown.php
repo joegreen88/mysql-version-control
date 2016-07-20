@@ -7,7 +7,7 @@ $app = new \Symfony\Component\Console\Application('teardown');
 foreach (\Smrtr\MysqlVersionControl\DbConfig::getEnvironments() as $env) {
 
     $app->add(
-        new \Smrtr\MysqlVersionControl\TeardownCommand($env)
+        new \Smrtr\MysqlVersionControl\Command\TeardownCommand($env)
     );
 }
 
