@@ -1,20 +1,57 @@
-smyver
-======
+mysql-version-control
+=====================
 
-**S**mrtr **My**sql **Ver**sion control, a.k.a. *smyver*, is a version control system for a mysql database.
+Effective mysql database version control in one library. Quick and simple to use, but with a rich and flexible
+API for those who want to customise the set up.
 
-Requires PHP 5.4 or above.
+## Requirements
+ - PHP >= 5.4
+ - Composer
+ - MySQL client
 
-Install by running `composer require smrtr/mysql-version-control:~1.0`.
+Install with composer:
 
-## Basic usage
+    $ composer require smrtr/mysql-version-control:~1.0
 
-## CLI interface
+# Configuration
+The quickest way to get started is to set up your database configuration in a file at `<project_root>/db/db.ini`.
 
-## PHP integration
-This package will put a script called *smyver.php* into your project's `vendor/bin` directory.
+See *examples/db.ini* for an example of this file.
 
-### up
+### Environments
+Define a list of environments and testing environments under the tag `[environments]`.
+
+List out all of the available environments with entries like so: `environments[] = "local-dev"`.
+
+List the testing environments like so: `testing_environments[] = "local-dev"`.
+This list is a subset of the environments list and comprises those environments which should receive test data.
+
+### Connections
+You must define two database connection configurations for each environment.
+The two configurations are called `buildtime` and `runtime` and they are used for processing schema changes and data
+changes respectively.
+
+Each connection requires a `host`, `user`, `password` and `database`. You can optionally add a `port`.
+
+# Versioning
+Your database versions will be stored in `<project_root>/db/versions` by default.
+The sql for each version is stored in a directory directly under this directory.
+So the directories are named `db/versions/1`, `db/versions/2` and so on.
+Each version must contain at least one of the following files:
+
+ - `schema.sql` - always runs first, contains `CREATE TABLE IF NOT EXISTS` and `ALTER` statements.
+ - `data.sql` - contains `REPLACE INTO`, `INSERT`, `UPDATE` and `DELETE` statements and the like.
+ - `testing.sql` - same as `data.sql` but with test data which doesn't need to exist outside of testing environments.
+ - `runme.php` - a custom php hook for running, for example, import tasks.
+
+The files are run in the order specified above.
+
+# Command Line Interface
+The command line tool is located at `vendor/bin/smyver.php`. 
+
+*Remember it! It stands for **S**mrtr **My**sql **Ver**sion control.*
+
+## up
 Run `vendor/bin/smyver.php up <environment>` to install or update the database on the given environment.
 This command looks at the available versions in the `db/versions` directory and applies new versions sequentially
 from the current version.
@@ -37,77 +74,11 @@ version in `<project_root>/db/versions/new` by default.
 #### `--provisional-version`
 Use this option to provide a custom path to your provisional version. Your custom path is relative to the versions path.
 
-### teardown
+## teardown
 Run `vendor/bin/smyver.php teardown <environment>` to tear down the tables on the given environment.
 
-This command is useful for development & testing developments where you may wish to, for example, tear down your
-database between test runs.
+This command is useful for development & testing environments.
 
 Use the `confirm` option to bypass the confirmation prompt, e.g.
 
     vendor/bin/smyver.php <environment> --confirm
-
-
-## Configuration
-Your database configuration will be stored at `<project_root>/db/db.ini`. In this file you will define a list of
-environments and then define database configurations for each environment.
-
-### environments
-Define a list of environments under the `[environments]` tag using the format `environments[] = "development"`. The
-CLI tool will add commands for each environment listed here.
-
-You may also define a list of testing environments using the format `testing_environments[] = "testing"`. The CLI tool
-will only apply test data on the environments listed here.
-
-### databases
-You must define two database configurations for each environment using the name of the environment as a tag.
-The two configurations are called `buildtime` and `runtime` and they are used for processing schemas and data
-respectively. Each configuration requires a `host`, `user`, `password` and `database` entry.
-
-### Example db.ini
-
-    [environments]
-    environments[] = "development"
-    environments[] = "production"
-
-    testing_environments[] = "development"
-
-    [development]
-    runtime.host = "localhost"
-    runtime.user = "buzz"
-    runtime.password = "lightyear"
-    runtime.database = "buzz"
-    runtime.port = 3306
-
-    buildtime.host = "localhost"
-    buildtime.user = "buzz"
-    buildtime.password = "lightyear"
-    buildtime.database = "buzz"
-    buildtime.port = 3306
-
-    [production]
-    runtime.host = "localhost"
-    runtime.user = "root"
-    runtime.password = "root"
-    runtime.database = "buzz"
-    runtime.port = 3306
-
-    buildtime.host = "localhost"
-    buildtime.user = "buzz"
-    buildtime.password = "lightyear"
-    buildtime.database = "buzz"
-    buildtime.port = 3306
-
-## Versioning
-Your database versions will be stored in `<project_root>/db/versions` by default.
-The sql for each version is stored in a directory directly under this directory.
-So the directories are named `db/versions/1`, `db/versions/2` and so on.
-Each version must contain at least one of the following files:
-
- - `schema.sql` - always runs first, contains `CREATE TABLE IF NOT EXISTS` and `ALTER` statements.
- - `data.sql` - contains `REPLACE INTO`, `INSERT`, `UPDATE` and `DELETE` statements and the like.
- - `testing.sql` - same as `data.sql` but with test data which doesn't need to exist outside of testing environments.
- - `runme.php` - a custom php hook for running, for example, import tasks.
-
-The files are run in the order specified above.
-
