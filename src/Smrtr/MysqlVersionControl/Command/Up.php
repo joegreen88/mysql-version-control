@@ -24,11 +24,6 @@ class Up extends Command
     const DEFAULT_PROVISIONAL_VERSION_NAME = 'new';
 
     /**
-     * @var string
-     */
-    protected $env;
-
-    /**
      * @inheritDoc
      */
     protected function configure()

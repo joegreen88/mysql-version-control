@@ -19,16 +19,6 @@ class Teardown extends Command
     use CommonParametersTrait;
 
     /**
-     * @var string
-     */
-    const DEFAULT_PROVISIONAL_VERSION_NAME = 'new';
-
-    /**
-     * @var string
-     */
-    protected $env;
-
-    /**
      * @inheritDoc
      */
     protected function configure()
