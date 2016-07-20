@@ -49,7 +49,7 @@ The files are run in the order specified above.
 # Command Line Interface
 The command line tool is located at `vendor/bin/smyver.php`. 
 
-*Remember it! It stands for **S**mrtr **My**sql **Ver**sion control.*
+*Remember it!* It stands for **S**mrtr **MY**sql **VER**sion control.
 
 ## up
 Run `vendor/bin/smyver.php up <environment>` to install or update the database on the given environment.
