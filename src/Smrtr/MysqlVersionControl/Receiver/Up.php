@@ -4,6 +4,7 @@ namespace Smrtr\MysqlVersionControl\Receiver;
 
 use Smrtr\MysqlVersionControl\DbConfig;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
 /**
  * Class Up is a receiver as in the command pattern.
