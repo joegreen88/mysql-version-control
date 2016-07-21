@@ -1,6 +1,6 @@
 <?php
 
-namespace Smrtr\MysqlVersionControl;
+namespace Smrtr\MysqlVersionControl\Command\Parameters;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;

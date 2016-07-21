@@ -3,10 +3,9 @@
 namespace Smrtr\MysqlVersionControl\Command;
 
 use Smrtr\MysqlVersionControl\Command\Parameters\CommonParametersTrait;
-use Smrtr\MysqlVersionControl\ComposerParams;
+use Smrtr\MysqlVersionControl\Command\Parameters\ComposerParams;
 use Smrtr\MysqlVersionControl\Receiver\Up as UpReceiver;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
