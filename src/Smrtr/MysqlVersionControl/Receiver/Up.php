@@ -78,8 +78,12 @@ class Up
         // 2. Check for current version and available version
 
         // what is the versions path?
+        $projectPath = realpath(dirname(__FILE__).'/../../../../../../..');
         if (!$versionsPath) {
-            $versionsPath = realpath(dirname(__FILE__).'/../../../../../../../db/versions');
+            $versionsPath = "$projectPath/db/versions";
+        }
+        if (!in_array(substr($versionsPath, 0, 1), ["/", "\\"])) { // then we assume path is relative to project root
+            $versionsPath = "$projectPath/$versionsPath";
         }
         if (!is_readable($versionsPath)) {
             $output->writeln('<error>Versions path is not readable: '.$versionsPath.'</error>');

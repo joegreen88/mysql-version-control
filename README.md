@@ -65,6 +65,7 @@ Use this flag to skip the schema files. This can be useful if you use an ORM to 
 #### `--versions-path`
 Use this option, or `-p` for short, to provide a custom path to your versions.
 This allows you to override the default versions path which is `<project_root>/db/versions`.
+If the path provided is not an absolute path then it is assumed to be relative to the project root.
 
 #### `--install-provisional-version`
 Use this flag to install a provisional version. This allows you to test out your database version, which may currently
