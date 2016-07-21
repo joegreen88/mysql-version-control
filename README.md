@@ -51,6 +51,17 @@ The command line tool is located at `vendor/bin/smyver.php`.
 
 *Remember it!* It stands for **S**mrtr **MY**sql **VER**sion control.
 
+## status
+Run `vendor/bin/smyver.php status <environment>` to get the current status of the database for that environment.
+
+#### `--versions-path`
+Use this option, or `-p` for short, to provide a custom path to your versions.
+This allows you to override the default versions path which is `<project_root>/db/versions`.
+If the path provided is not an absolute path then it is assumed to be relative to the project root.
+
+#### `--provisional-version`
+Use this option to provide a custom path to your provisional version. Your custom path is relative to the versions path.
+
 ## up
 Run `vendor/bin/smyver.php up <environment>` to install or update the database on the given environment.
 This command looks at the available versions in the `db/versions` directory and applies new versions sequentially
