@@ -29,7 +29,7 @@ class Configuration
     public static function applyConsoleConfigurationOptions(InputInterface $input)
     {
         $configAdapter = (string) $input->getOption("config-adapter");
-        $configAdapterParams = (array) $input->getOption("config-adapter-params");
+        $configAdapterParams = (array) $input->getOption("config-adapter-param");
 
         if (!count($configAdapterParams) && !strlen($configAdapter)) {
             return;
