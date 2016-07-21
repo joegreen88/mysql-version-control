@@ -74,7 +74,7 @@ class ComposerParams
     protected function getComposerParams($commandName = null, $composerJsonFilePath = null)
     {
         if (null === $composerJsonFilePath) {
-            $composerJsonFilePath = realpath(__DIR__.'/../../../../../../composer.json');
+            $composerJsonFilePath = realpath(__DIR__.'/../../../../../../../../composer.json');
         }
 
         if (!is_file($composerJsonFilePath) or !is_readable($composerJsonFilePath)) {
