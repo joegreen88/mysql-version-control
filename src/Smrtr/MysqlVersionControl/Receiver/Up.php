@@ -3,6 +3,7 @@
 namespace Smrtr\MysqlVersionControl\Receiver;
 
 use Smrtr\MysqlVersionControl\DbConfig;
+use Smrtr\MysqlVersionControl\Helper\VersionsPath;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
@@ -22,6 +23,18 @@ use Symfony\Component\Process\Process;
  */
 class Up
 {
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param string $env
+     * @param string $mysqlBin
+     * @param null $versionsPath
+     * @param bool $noSchema
+     * @param bool $installProvisionalVersion
+     * @param string $provisionalVersion
+     *
+     * @return int
+     */
     public function execute(
         InputInterface $input,
         OutputInterface $output,
@@ -72,39 +85,15 @@ class Up
         // Check for current version and available version
 
         // what is the versions path?
-        $projectPath = realpath(dirname(__FILE__).'/../../../../../../..');
-        if (!$versionsPath) {
-            $versionsPath = "$projectPath/db/versions";
-        }
-        if (!in_array(substr($versionsPath, 0, 1), ["/", "\\"])) { // then we assume path is relative to project root
-            $versionsPath = "$projectPath/$versionsPath";
-        }
-        if (!is_readable($versionsPath)) {
-            $output->writeln('<error>Versions path is not readable: '.$versionsPath.'</error>');
-            return 1;
-        }
-        if (!is_dir($versionsPath)) {
-            $output->writeln('<error>Versions path is not a directory: '.$versionsPath.'</error>');
-            return 1;
-        }
+        $versionsPath = VersionsPath::resolveVersionsPath($versionsPath);
 
         // what is the current version?
-        $query = $runConn->query("SELECT `value` FROM `db_config` WHERE `key`='version'");
-        if ($query->rowCount()) {
-            $versionRow = $query->fetch(\PDO::FETCH_ASSOC);
-            $currentVersion = (int) $versionRow['value'];
-        } else {
-            $currentVersion = 0;
-        }
+        $statusReceiver = new Status;
+        $currentVersion = $statusReceiver->getCurrentVersion($env);
         $output->writeln('Current version: '.$currentVersion);
 
         // what is the available version?
-        $availableVersion = 0;
-        foreach (scandir($versionsPath) as $path) {
-            if (preg_match("/^(\\d)+$/", $path) && (int) $path > $availableVersion) {
-                $availableVersion = (int) $path;
-            }
-        }
+        $availableVersion = $statusReceiver->getAvailableVersion($versionsPath);
         $output->writeln('Available version: '.$availableVersion);
 
         $filesToLookFor = [];

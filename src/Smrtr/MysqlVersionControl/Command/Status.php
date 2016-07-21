@@ -4,19 +4,18 @@ namespace Smrtr\MysqlVersionControl\Command;
 
 use Smrtr\MysqlVersionControl\Command\Parameters\CommonParametersTrait;
 use Smrtr\MysqlVersionControl\Command\Parameters\ComposerParams;
-use Smrtr\MysqlVersionControl\Receiver\Teardown as TeardownReceiver;
+use Smrtr\MysqlVersionControl\Receiver\Status as StatusReceiver;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class Teardown is a symfony console command that removes all tables from the database for the given environment.
+ * Class Status is a symfony console command that reports the status of the given environment.
  *
  * @package Smrtr\MysqlVersionControl\Command
  * @author Joe Green <joe.green@smrtr.co.uk>
  */
-class Teardown extends Command
+class Status extends Command
 {
     use CommonParametersTrait;
 
@@ -28,18 +27,13 @@ class Teardown extends Command
         // Parameters
         $this
             ->addEnvironmentArgument()
-            ->addOption(
-                'confirm',
-                null,
-                InputOption::VALUE_NONE,
-                'If set, the command will bypass the confirmation prompt'
-            )
+            ->addVersionsPathOption()
         ;
 
         // Name & description
         $this
-            ->setName("teardown")
-            ->setDescription('Tear down the database tables from the given environment')
+            ->setName("status")
+            ->setDescription('Reports the status of the database for the given environment')
         ;
     }
 
@@ -56,12 +50,12 @@ class Teardown extends Command
         $composerParams = new ComposerParams;
         $composerParams->applyComposerParams($this, $input);
 
-        $receiver = new TeardownReceiver;
+        $receiver = new StatusReceiver;
         return $receiver->execute(
             $input,
             $output,
             $input->getArgument('env'),
-            $input->getOption('confirm')
+            $input->getOption('versions-path')
         );
     }
 }

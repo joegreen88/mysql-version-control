@@ -10,6 +10,14 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class Teardown
 {
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param string $env
+     * @param bool $confirm
+     *
+     * @return int
+     */
     public function execute(
         InputInterface $input,
         OutputInterface $output,

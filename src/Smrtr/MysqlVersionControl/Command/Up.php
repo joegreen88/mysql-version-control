@@ -76,7 +76,7 @@ class Up extends Command
         $composerParams = new ComposerParams;
         $composerParams->applyComposerParams($this, $input);
 
-        $receiver = new UpReceiver();
+        $receiver = new UpReceiver;
         return $receiver->execute(
             $input,
             $output,
