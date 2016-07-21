@@ -38,7 +38,7 @@ class ComposerParams
      */
     public function applyComposerParams(Command $command, InputInterface $input)
     {
-        $params = $this->getComposerParams($command->getName());
+        $params = $this->getComposerParams($input->getArgument("env"));
         $definition = $command->getDefinition();
 
         foreach ($this->filterComposerParams($params, $definition) as $param => $value) {
@@ -66,12 +66,12 @@ class ComposerParams
     }
 
     /**
-     * @param string|null $commandName
+     * @param string $env
      * @param string|null $composerJsonFilePath
      *
      * @return array
      */
-    protected function getComposerParams($commandName = null, $composerJsonFilePath = null)
+    protected function getComposerParams($env, $composerJsonFilePath = null)
     {
         if (null === $composerJsonFilePath) {
             $composerJsonFilePath = realpath(__DIR__.'/../../../../../../../../composer.json');
@@ -93,11 +93,11 @@ class ComposerParams
             return [];
         }
 
-        $commandParams = isset($params[$commandName]) && is_array($params[$commandName]) ? $params[$commandName] : [];
+        $envParams = isset($params["env"][$env]) && is_array($params["env"][$env]) ? $params["env"][$env] : [];
 
         foreach ($params as $key => $val) {
-            if (isset($commandParams[$key])) {
-                $params[$key] = $commandParams[$key];
+            if (isset($envParams[$key])) {
+                $params[$key] = $envParams[$key];
             }
             if (!is_scalar($val)) {
                 unset($params[$key]);

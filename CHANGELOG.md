@@ -5,6 +5,7 @@ Changelog
 
 ### General Improvements
 
+ - Added composer parameter loading to CLI commands
  - Bundle all commands into single script smyver.php
  - Added port configuration option
  - Refactor: implemented the command pattern
@@ -15,6 +16,10 @@ Changelog
  - Ini (the default adapter)
  - PhpArray
  - PhpFile
+
+### Up command:
+
+ - Option `--provisional-version` is relative to project root if not an absolute path
 
 ## 1.2.0
 
