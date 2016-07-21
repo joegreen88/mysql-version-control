@@ -111,7 +111,7 @@ class ComposerParams
             isset($parsedJson["extra"]["mysql-version-control"]["env"][$env]) &&
             is_array($parsedJson["extra"]["mysql-version-control"]["env"][$env])
         )
-            ? $params["env"][$env]
+            ? $parsedJson["extra"]["mysql-version-control"]["env"][$env]
             : []
         ;
 
