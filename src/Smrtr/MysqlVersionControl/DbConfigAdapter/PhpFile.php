@@ -82,12 +82,18 @@ class PhpFile implements ConfigAdapterInterface
     /**
      * Set the path to the php file and invalidate any previously loaded configuration.
      *
+     * If the path provided is not absolute then it is assumed to be relative to the project root.
+     *
      * @param string $phpFilePath The path to the php file
      *
      * @return $this
      */
     public function setFilePath($phpFilePath)
     {
+        if (!in_array(substr($phpFilePath, 0, 1), ["/", "\\"])) { // then we assume path is relative to project root
+            $projectPath = realpath(dirname(__FILE__).'/../../../../../../..');
+            $phpFilePath = "$projectPath/$phpFilePath";
+        }
         $this->filePath = $phpFilePath;
         $this->array = null;
         return $this;
