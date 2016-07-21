@@ -13,9 +13,13 @@ use Symfony\Component\Console\Input\InputInterface;
  *   "extra": {
  *     "mysql-version-control": {
  *       "cli": {
- *         "mysql-bin": "/path/to/mysql/bin",
- *         "--install-provisional-version": true,
  *         "--provisional-version": "new-version"
+ *         "--versions-path": "db/commits"
+ *       },
+ *       "env": {
+ *         "development": {
+ *           "mysql-bin": "/path/to/mysql/bin"
+ *         }
  *       }
  *     }
  *   }
