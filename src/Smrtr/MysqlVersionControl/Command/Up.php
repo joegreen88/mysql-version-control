@@ -21,11 +21,6 @@ class Up extends Command
     use CommonParametersTrait;
 
     /**
-     * @var string
-     */
-    const DEFAULT_PROVISIONAL_VERSION_NAME = 'new';
-
-    /**
      * @inheritDoc
      */
     protected function configure()
@@ -35,6 +30,7 @@ class Up extends Command
             ->addEnvironmentArgument()
             ->addMysqlBinArgument()
             ->addVersionsPathOption()
+            ->addProvisionalVersionOption()
             ->addOption(
                 'no-schema',
                 null,
@@ -46,13 +42,6 @@ class Up extends Command
                 null,
                 InputOption::VALUE_NONE,
                 'Install a provisional version which may still be in development and is not final.'
-            )
-            ->addOption(
-                'provisional-version',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The name of the provisional version',
-                static::DEFAULT_PROVISIONAL_VERSION_NAME
             )
         ;
 

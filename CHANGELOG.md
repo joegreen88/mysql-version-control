@@ -5,6 +5,7 @@ Changelog
 
 ### General Improvements
 
+ - Added a new command: `status`
  - Added composer parameter loading to CLI commands
  - Bundle all commands into single script smyver.php
  - Added port configuration option

@@ -3,7 +3,7 @@
 namespace Smrtr\MysqlVersionControl\Receiver;
 
 use Smrtr\MysqlVersionControl\DbConfig;
-use Smrtr\MysqlVersionControl\Helper\VersionsPath;
+use Smrtr\MysqlVersionControl\Helper\VersionPaths;
 use Smrtr\MysqlVersionControlException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,7 +24,8 @@ class Status
      * @param InputInterface $input
      * @param OutputInterface $output
      * @param string $env
-     * @param null $versionsPath
+     * @param string|null $versionsPath
+     * @param string|null $provisionalVersion
      *
      * @return int
      */
@@ -32,7 +33,8 @@ class Status
         InputInterface $input,
         OutputInterface $output,
         $env,
-        $versionsPath = null
+        $versionsPath = null,
+        $provisionalVersion = null
     ) {
         if (!$this->hasVersionControl($env)) {
             $output->writeln("The database is not currently under version control");
@@ -41,6 +43,10 @@ class Status
         $output->writeln("Current version: ".$this->getCurrentVersion($env));
 
         $output->writeln("Available version: ".$this->getAvailableVersion($versionsPath));
+
+        if ($this->hasProvisionalVersion($versionsPath, $provisionalVersion)) {
+            $output->writeln("A provisional version is also available");
+        }
 
         return 0;
     }
@@ -80,12 +86,34 @@ class Status
     public function getAvailableVersion($versionsPath)
     {
         $availableVersion = 0;
-        foreach (scandir(VersionsPath::resolveVersionsPath($versionsPath)) as $path) {
+        foreach (scandir(VersionPaths::resolveVersionsPath($versionsPath)) as $path) {
             if (preg_match("/^(\\d)+$/", $path) && (int) $path > $availableVersion) {
                 $availableVersion = (int) $path;
             }
         }
         return $availableVersion;
+    }
+
+    /**
+     * Returns true iff there is a provisional version directory with at least one recognized file inside it.
+     *
+     * @param string|null $versionsPath
+     * @param string|null $provisionalVersion
+     *
+     * @return bool
+     */
+    public function hasProvisionalVersion($versionsPath, $provisionalVersion)
+    {
+        $filesToLookFor = VersionPaths::getVersioningFilesToLookFor(true, true);
+        $path = VersionPaths::resolveProvisionalVersionPath($versionsPath, $provisionalVersion);
+        if (is_readable($path) && is_dir($path)) {
+            foreach ($filesToLookFor as $file) {
+                if (is_readable($path.DIRECTORY_SEPARATOR.$file) && is_file($path.DIRECTORY_SEPARATOR.$file)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

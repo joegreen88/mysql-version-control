@@ -28,6 +28,7 @@ class Status extends Command
         $this
             ->addEnvironmentArgument()
             ->addVersionsPathOption()
+            ->addProvisionalVersionOption()
         ;
 
         // Name & description
@@ -55,7 +56,8 @@ class Status extends Command
             $input,
             $output,
             $input->getArgument('env'),
-            $input->getOption('versions-path')
+            $input->getOption('versions-path'),
+            $input->getOption('provisional-version')
         );
     }
 }

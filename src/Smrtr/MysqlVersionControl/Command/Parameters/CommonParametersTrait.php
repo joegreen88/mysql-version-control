@@ -51,4 +51,17 @@ trait CommonParametersTrait
             'Optional custom path to database versions directory'
         );
     }
+
+    /**
+     * @return $this
+     */
+    protected function addProvisionalVersionOption()
+    {
+        return $this->addOption(
+            'provisional-version',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'The name of the provisional version'
+        );
+    }
 }

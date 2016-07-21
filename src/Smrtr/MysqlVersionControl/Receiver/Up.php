@@ -3,7 +3,7 @@
 namespace Smrtr\MysqlVersionControl\Receiver;
 
 use Smrtr\MysqlVersionControl\DbConfig;
-use Smrtr\MysqlVersionControl\Helper\VersionsPath;
+use Smrtr\MysqlVersionControl\Helper\VersionPaths;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
@@ -43,7 +43,7 @@ class Up
         $versionsPath = null,
         $noSchema = false,
         $installProvisionalVersion = false,
-        $provisionalVersion = 'new'
+        $provisionalVersion = null
     ) {
         $buildConn = DbConfig::getPDO($env, true);
         $runConn = DbConfig::getPDO($env);
@@ -85,7 +85,7 @@ class Up
         // Check for current version and available version
 
         // what is the versions path?
-        $versionsPath = VersionsPath::resolveVersionsPath($versionsPath);
+        $versionsPath = VersionPaths::resolveVersionsPath($versionsPath);
 
         // what is the current version?
         $statusReceiver = new Status;
@@ -96,15 +96,11 @@ class Up
         $availableVersion = $statusReceiver->getAvailableVersion($versionsPath);
         $output->writeln('Available version: '.$availableVersion);
 
-        $filesToLookFor = [];
-        if (!$noSchema) {
-            $filesToLookFor[] = 'schema.sql';       // structural changes, alters, creates, drops
-        }
-        $filesToLookFor[] = 'data.sql';             // core data, inserts, replaces, updates, deletes
-        if (in_array($env, DbConfig::getTestingEnvironments())) {
-            $filesToLookFor[] = 'testing.sql';      // extra data on top of data.sql for the testing environment(s)
-        }
-        $filesToLookFor[] = 'runme.php';            // custom php hook
+        // Let's scan these versions and build a stack of files
+        $filesToLookFor = VersionPaths::getVersioningFilesToLookFor(
+            !$noSchema,
+            in_array($env, DbConfig::getTestingEnvironments())
+        );
 
         $stack = array();
         if ($currentVersion < $availableVersion) {
@@ -125,12 +121,9 @@ class Up
 
         // Look for a provisional version?
         if ($installProvisionalVersion) {
-
-            $output->writeln('Provisional version: '.$provisionalVersion);
-
-            $path = $versionsPath.DIRECTORY_SEPARATOR.$provisionalVersion;
+            $output->writeln('Looking for provisional version: '.$provisionalVersion);
+            $path = VersionPaths::resolveProvisionalVersionPath($versionsPath, $provisionalVersion);
             if (is_readable($path) && is_dir($path)) {
-
                 foreach ($filesToLookFor as $file) {
                     if (is_readable($path.DIRECTORY_SEPARATOR.$file) && is_file($path.DIRECTORY_SEPARATOR.$file)) {
                         $stack[$provisionalVersion][$file] = $path.DIRECTORY_SEPARATOR.$file;
