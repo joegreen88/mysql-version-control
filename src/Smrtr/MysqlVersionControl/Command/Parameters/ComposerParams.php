@@ -2,6 +2,7 @@
 
 namespace Smrtr\MysqlVersionControl\Command\Parameters;
 
+use Smrtr\MysqlVersionControlException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,6 +40,7 @@ class ComposerParams
      * @param InputInterface $input
      *
      * @return $this
+     * @throws MysqlVersionControlException
      */
     public function applyComposerParams(Command $command, InputInterface $input)
     {
@@ -55,7 +57,15 @@ class ComposerParams
                 if (!$Option->acceptValue() && false === $input->getOption($option)) {
                     $input->setOption($option, null);
                 } elseif ($Option->acceptValue() && $Option->getDefault() === $input->getOption($option)) {
-                    $input->setOption($option, $value);
+                    if ($Option->isArray()) {
+                        $input->setOption($option, is_array($value) ? $value : [$value]);
+                    } elseif (is_array($value)) {
+                        throw new MysqlVersionControlException(
+                            "The '$option' option does not accept arrays. Check your composer.json"
+                        );
+                    } else {
+                        $input->setOption($option, $value);
+                    }
                 }
 
             } else { // argument
@@ -97,7 +107,13 @@ class ComposerParams
             return [];
         }
 
-        $envParams = isset($params["env"][$env]) && is_array($params["env"][$env]) ? $params["env"][$env] : [];
+        $envParams = (
+            isset($parsedJson["extra"]["mysql-version-control"]["env"][$env]) &&
+            is_array($parsedJson["extra"]["mysql-version-control"]["env"][$env])
+        )
+            ? $params["env"][$env]
+            : []
+        ;
 
         foreach ($params as $key => $val) {
             if (isset($envParams[$key])) {

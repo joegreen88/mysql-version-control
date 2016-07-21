@@ -13,6 +13,19 @@ Install with composer:
 
     $ composer require smrtr/mysql-version-control:~1.0
 
+# Versioning
+Your database versions will be stored in `<project_root>/db/versions` by default.
+The sql for each version is stored in a directory directly under this directory.
+So the directories are named `db/versions/1`, `db/versions/2` and so on.
+Each version must contain at least one of the following files:
+
+ - `schema.sql` - always runs first, contains `CREATE TABLE IF NOT EXISTS` and `ALTER` statements and the like.
+ - `data.sql` - contains `REPLACE INTO`, `INSERT`, `UPDATE` and `DELETE` statements and the like.
+ - `testing.sql` - same as `data.sql` but with test data which doesn't need to exist outside of testing environments.
+ - `runme.php` - a custom php hook for running php code with your version.
+
+The files for each version are run in the order specified above.
+
 # Configuration
 The quickest way to get started is to set up your database configuration in a file at `<project_root>/db/db.ini`.
 
@@ -32,19 +45,6 @@ The two configurations are called `buildtime` and `runtime` and they are used fo
 changes respectively.
 
 Each connection requires a `host`, `user`, `password` and `database`. You can optionally add a `port`.
-
-# Versioning
-Your database versions will be stored in `<project_root>/db/versions` by default.
-The sql for each version is stored in a directory directly under this directory.
-So the directories are named `db/versions/1`, `db/versions/2` and so on.
-Each version must contain at least one of the following files:
-
- - `schema.sql` - always runs first, contains `CREATE TABLE IF NOT EXISTS` and `ALTER` statements.
- - `data.sql` - contains `REPLACE INTO`, `INSERT`, `UPDATE` and `DELETE` statements and the like.
- - `testing.sql` - same as `data.sql` but with test data which doesn't need to exist outside of testing environments.
- - `runme.php` - a custom php hook for running, for example, import tasks.
-
-The files are run in the order specified above.
 
 # Command Line Interface
 The command line tool is located at `vendor/bin/smyver.php`. 
