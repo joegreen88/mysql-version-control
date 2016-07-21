@@ -4,6 +4,7 @@ namespace Smrtr\MysqlVersionControl\Command;
 
 use Smrtr\MysqlVersionControl\Command\Parameters\CommonParametersTrait;
 use Smrtr\MysqlVersionControl\Command\Parameters\ComposerParams;
+use Smrtr\MysqlVersionControl\Helper\Configuration;
 use Smrtr\MysqlVersionControl\Receiver\Up as UpReceiver;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,6 +30,7 @@ class Up extends Command
         $this
             ->addEnvironmentArgument()
             ->addMysqlBinArgument()
+            ->addGlobalOptions()
             ->addVersionsPathOption()
             ->addProvisionalVersionOption()
             ->addOption(
@@ -64,6 +66,7 @@ class Up extends Command
     {
         $composerParams = new ComposerParams;
         $composerParams->applyComposerParams($this, $input);
+        Configuration::applyConsoleConfigurationOptions($input);
 
         $receiver = new UpReceiver;
         return $receiver->execute(

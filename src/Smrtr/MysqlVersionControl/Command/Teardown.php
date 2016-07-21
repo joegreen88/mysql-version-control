@@ -4,6 +4,7 @@ namespace Smrtr\MysqlVersionControl\Command;
 
 use Smrtr\MysqlVersionControl\Command\Parameters\CommonParametersTrait;
 use Smrtr\MysqlVersionControl\Command\Parameters\ComposerParams;
+use Smrtr\MysqlVersionControl\Helper\Configuration;
 use Smrtr\MysqlVersionControl\Receiver\Teardown as TeardownReceiver;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,6 +29,7 @@ class Teardown extends Command
         // Parameters
         $this
             ->addEnvironmentArgument()
+            ->addGlobalOptions()
             ->addOption(
                 'confirm',
                 null,
@@ -55,6 +57,7 @@ class Teardown extends Command
     {
         $composerParams = new ComposerParams;
         $composerParams->applyComposerParams($this, $input);
+        Configuration::applyConsoleConfigurationOptions($input);
 
         $receiver = new TeardownReceiver;
         return $receiver->execute(

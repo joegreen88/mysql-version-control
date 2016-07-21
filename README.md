@@ -70,6 +70,9 @@ from the current version.
 If this is the first run on the given environment, then a table called `db_config` is created and used to store the
 current database version.
 
+You may optionally provide a second argument specifying the mysql client binary to use.
+This argument is required if mysql is not on your $PATH.
+
 #### `--no-schema`
 Use this flag to skip the schema files. This can be useful if you use an ORM to build the database schema.
 
@@ -94,3 +97,22 @@ This command is useful for development & testing environments.
 Use the `confirm` option to bypass the confirmation prompt, e.g.
 
     vendor/bin/smyver.php <environment> --confirm
+
+## Global CLI options
+These options can be used with all console commands.
+
+#### `--config-adapter`
+Specify a configuration adapter to use instead of the Ini adapter which is used by default.
+
+If you are using one of the standard adapters shipped with this package you only need to enter the class name,
+e.g. PhpFile.
+
+If you are using your own custom adapter class then you must provide a fully qualified class name and your class
+must implement `Smrtr\MysqlVersionControl\DbConfigAdapter\ConfigAdapterInterface`.
+
+#### `--config-adapter-param`
+You can specify one or more constructor parameters for the configuration adapter class with this option.
+
+To specify multiple parameters simply use the option more than once, e.g.
+`--config-adapter-param="One" --config-adapter-param="Two"`
+would result in the configuration adapter being instantiated like so: `new $adapter("One", "Two")`.

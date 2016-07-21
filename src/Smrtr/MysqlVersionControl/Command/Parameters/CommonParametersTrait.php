@@ -18,6 +18,17 @@ trait CommonParametersTrait
     /**
      * @return $this
      */
+    protected function addGlobalOptions()
+    {
+        return $this
+            ->addConfigAdapterOption()
+            ->addConfigAdapterParametersOption()
+        ;
+    }
+
+    /**
+     * @return $this
+     */
     protected function addEnvironmentArgument()
     {
         return $this->addArgument(
@@ -36,6 +47,34 @@ trait CommonParametersTrait
             'mysql-bin',
             InputArgument::OPTIONAL,
             'Where is the MySQL binary located?'
+        );
+    }
+
+    /**
+     * @return $this
+     */
+    protected function addConfigAdapterOption()
+    {
+        return $this->addOption(
+            'config-adapter',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Specify a database configuration adapter to use. Give the unqualified class name of a shipped adapter, '.
+            'or the fully qualified class name of your own custom adapter.'
+        );
+    }
+
+    /**
+     * @return $this
+     */
+    protected function addConfigAdapterParametersOption()
+    {
+        return $this->addOption(
+            'config-adapter-param',
+            null,
+            InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY ,
+            'An array of parameters to pass to the constructor function of the database configuration adapter',
+            []
         );
     }
 
