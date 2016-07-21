@@ -115,16 +115,7 @@ class ComposerParams
             : []
         ;
 
-        foreach ($params as $key => $val) {
-            if (isset($envParams[$key])) {
-                $params[$key] = $envParams[$key];
-            }
-            if (!is_scalar($val)) {
-                unset($params[$key]);
-            }
-        }
-
-        return $params;
+        return array_merge($params, $envParams);
     }
 
     /**
