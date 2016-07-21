@@ -34,13 +34,7 @@ class Up
     ) {
         $buildConn = DbConfig::getPDO($env, true);
         $runConn = DbConfig::getPDO($env);
-
-        // 1. Make sure that db_config table is present
-
-        $output->writeln('');
         $output->writeln('Checking database status... ');
-        $output->writeln('');
-
 
         if (!$buildConn instanceof \PDO) {
             $output->writeln('<error>Failed: unable to obtain a database connection.</error>');
@@ -75,7 +69,7 @@ class Up
             $output->writeln('<info>Installed version control successfully.</info>');
         }
 
-        // 2. Check for current version and available version
+        // Check for current version and available version
 
         // what is the versions path?
         $projectPath = realpath(dirname(__FILE__).'/../../../../../../..');
