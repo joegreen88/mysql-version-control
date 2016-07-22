@@ -69,7 +69,7 @@ class Status
     public function getCurrentVersion($env)
     {
         $query = $this->getRuntimeConnection($env)->query("SELECT `value` FROM `db_config` WHERE `key`='version'");
-        if ($query->rowCount()) {
+        if ($query instanceof \PDOStatement && $query->rowCount()) {
             $versionRow = $query->fetch(\PDO::FETCH_ASSOC);
             $currentVersion = (int) $versionRow['value'];
         } else {
