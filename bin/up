@@ -1,3 +1,5 @@
-#!/usr/bin/env php
-<?php
-include('up.php');
+#!/usr/bin/env bash
+
+this_dir="$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+php "$this_dir/smyver.php" up "$@"
