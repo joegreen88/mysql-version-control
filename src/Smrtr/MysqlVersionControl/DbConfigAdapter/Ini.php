@@ -62,6 +62,18 @@ class Ini implements ConfigAdapterInterface
     protected $configFile;
 
     /**
+     * Ini constructor.
+     *
+     * @param string|null $path
+     */
+    public function __construct($path = null)
+    {
+        if ($path) {
+            $this->setConfigFile($path);
+        }
+    }
+
+    /**
      * Set the file path of the config file to load.
      *
      * @param string $path

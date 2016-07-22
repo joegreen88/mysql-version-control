@@ -2,11 +2,14 @@
 
 namespace Smrtr\MysqlVersionControl\Command;
 
+use Smrtr\MysqlVersionControl\Command\Parameters\CommonParametersTrait;
+use Smrtr\MysqlVersionControl\Command\Parameters\ComposerParams;
+use Smrtr\MysqlVersionControl\Helper\Configuration;
+use Smrtr\MysqlVersionControl\Receiver\Teardown as TeardownReceiver;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Smrtr\MysqlVersionControl\Receiver\Teardown as TeardownReceiver;
 
 /**
  * Class Teardown is a symfony console command that removes all tables from the database for the given environment.
@@ -26,7 +29,7 @@ class Teardown extends Command
         // Parameters
         $this
             ->addEnvironmentArgument()
-            ->addMysqlBinArgument()
+            ->addGlobalOptions()
             ->addOption(
                 'confirm',
                 null,
@@ -52,7 +55,11 @@ class Teardown extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $receiver = new TeardownReceiver();
+        $composerParams = new ComposerParams;
+        $composerParams->applyComposerParams($this, $input);
+        Configuration::applyConsoleConfigurationOptions($input);
+
+        $receiver = new TeardownReceiver;
         return $receiver->execute(
             $input,
             $output,

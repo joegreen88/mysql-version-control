@@ -1,0 +1,21 @@
+{
+  "require": {
+    "smrtr/mysql-version-control": "~1.3"
+  },
+  "extra": {
+    "mysql-version-control": {
+      "cli": {
+        "--config-adapter": "PhpFile",
+        "--config-adapter-param": ["db/config.php"]
+      },
+      "env": {
+        "web-development, web-qa, web-staging, web-production": {
+          "--versions-path": "db/web"
+        },
+        "employees-development, employees-qa, employees-staging, employees-production": {
+          "--versions-path": "db/employees"
+        }
+      }
+    }
+  }
+}
