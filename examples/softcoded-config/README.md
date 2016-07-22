@@ -1,6 +1,8 @@
 Example: softcoded database configuration
 =========================================
 
+**Level:** Advanced
+
 This sample configuration loads the database connection from a php file with softcoded values that come from
 the server environment.
 
@@ -11,16 +13,15 @@ In this example the buildtime and runtime connections are identical.
 
 ## The details
 
-The following `$_SERVER` variables need to be defined:
+The variable `$_SERVER["APP_ENV"]` needs to be one of the values in the *environments* section of `db/db.php`.
 
- - APP_ENV
+The following `$_SERVER` variables also need to be defined:
+
  - DB_HOST
  - DB_USERNAME
  - DB_PASSWORD
  - DB_NAME
- - DB_PORT
- 
-The variable `$_SERVER["APP_ENV"]` needs to one of the values in the *environments* section of `db/db.php`.
+ - DB_PORT 
 
 ## Usage
 
