@@ -138,8 +138,8 @@ class ComposerParams
         }
 
         $return = [];
-        foreach ($smyverJsonParsed["env"] as $env => $params) {
-            $environments = preg_split("/,[\\s]*/", $env);
+        foreach ($smyverJsonParsed["env"] as $environment => $params) {
+            $environments = preg_split("/,[\\s]*/", $environment);
             if (array_key_exists($env, $environments)) {
                 $return = array_merge($return, $params);
             }
