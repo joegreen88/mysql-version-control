@@ -97,25 +97,55 @@ class ComposerParams
 
         $parsedJson = json_decode(file_get_contents($composerJsonFilePath), true);
 
-        if (!isset($parsedJson["extra"]["mysql-version-control"]["cli"])) {
+        if (
+            !isset($parsedJson["extra"]["mysql-version-control"]) or
+            !is_array($parsedJson["extra"]["mysql-version-control"])
+        ) {
             return [];
         }
 
-        $params = $parsedJson["extra"]["mysql-version-control"]["cli"];
+        $smyverJsonParsed = $parsedJson["extra"]["mysql-version-control"];
+        $cliParams = $this->getCliComposerParams($smyverJsonParsed);
+        $envParams = $this->getEnvironmentComposerParams($env, $smyverJsonParsed);
 
-        if (!is_array($params)) {
+        return array_merge($cliParams, $envParams);
+    }
+
+    /**
+     * @param array $smyverJsonParsed
+     *
+     * @return array
+     */
+    protected function getCliComposerParams(array $smyverJsonParsed)
+    {
+        if (!isset($smyverJsonParsed["cli"]) or !is_array($smyverJsonParsed["cli"])) {
             return [];
         }
 
-        $envParams = (
-            isset($parsedJson["extra"]["mysql-version-control"]["env"][$env]) &&
-            is_array($parsedJson["extra"]["mysql-version-control"]["env"][$env])
-        )
-            ? $parsedJson["extra"]["mysql-version-control"]["env"][$env]
-            : []
-        ;
+        return $smyverJsonParsed["cli"];
+    }
 
-        return array_merge($params, $envParams);
+    /**
+     * @param string $env
+     * @param array $smyverJsonParsed
+     *
+     * @return array
+     */
+    protected function getEnvironmentComposerParams($env, array $smyverJsonParsed)
+    {
+        if (!isset($smyverJsonParsed["env"]) or !is_array($smyverJsonParsed["env"])) {
+            return [];
+        }
+
+        $return = [];
+        foreach ($smyverJsonParsed["env"] as $env => $params) {
+            $environments = preg_split("/,[\\s]*/", $env);
+            if (array_key_exists($env, $environments)) {
+                $return = array_merge($return, $params);
+            }
+        }
+
+        return $return;
     }
 
     /**
