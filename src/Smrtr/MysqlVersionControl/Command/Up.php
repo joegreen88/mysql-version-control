@@ -31,8 +31,6 @@ class Up extends Command
             ->addEnvironmentArgument()
             ->addMysqlBinArgument()
             ->addGlobalOptions()
-            ->addVersionsPathOption()
-            ->addProvisionalVersionOption()
             ->addOption(
                 'no-schema',
                 null,

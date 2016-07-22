@@ -23,6 +23,8 @@ trait CommonParametersTrait
         return $this
             ->addConfigAdapterOption()
             ->addConfigAdapterParametersOption()
+            ->addVersionsPathOption()
+            ->addProvisionalVersionOption()
         ;
     }
 

@@ -29,8 +29,6 @@ class Status extends Command
         $this
             ->addEnvironmentArgument()
             ->addGlobalOptions()
-            ->addVersionsPathOption()
-            ->addProvisionalVersionOption()
         ;
 
         // Name & description

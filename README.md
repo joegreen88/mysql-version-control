@@ -54,14 +54,6 @@ The command line tool is located at `vendor/bin/smyver.php`.
 ## status
 Run `vendor/bin/smyver.php status <environment>` to get the current status of the database for that environment.
 
-#### `--versions-path`
-Use this option, or `-p` for short, to provide a custom path to your versions.
-This allows you to override the default versions path which is `<project_root>/db/versions`.
-If the path provided is not an absolute path then it is assumed to be relative to the project root.
-
-#### `--provisional-version`
-Use this option to provide a custom path to your provisional version. Your custom path is relative to the versions path.
-
 ## up
 Run `vendor/bin/smyver.php up <environment>` to install or update the database on the given environment.
 This command looks at the available versions in the `db/versions` directory and applies new versions sequentially
@@ -76,18 +68,10 @@ This argument is required if mysql is not on your $PATH.
 #### `--no-schema`
 Use this flag to skip the schema files. This can be useful if you use an ORM to build the database schema.
 
-#### `--versions-path`
-Use this option, or `-p` for short, to provide a custom path to your versions.
-This allows you to override the default versions path which is `<project_root>/db/versions`.
-If the path provided is not an absolute path then it is assumed to be relative to the project root.
-
 #### `--install-provisional-version`
 Use this flag to install a provisional version. This allows you to test out your database version, which may currently
 be in development, before you commit to it by giving it a version number. This command looks for your provisional
 version in `<project_root>/db/versions/new` by default.
-
-#### `--provisional-version`
-Use this option to provide a custom path to your provisional version. Your custom path is relative to the versions path.
 
 ## teardown
 Run `vendor/bin/smyver.php teardown <environment>` to tear down the tables on the given environment.
@@ -116,3 +100,11 @@ You can specify one or more constructor parameters for the configuration adapter
 To specify multiple parameters simply use the option more than once, e.g.
 `--config-adapter-param="One" --config-adapter-param="Two"`
 would result in the configuration adapter being instantiated like so: `new $adapter("One", "Two")`.
+
+#### `--provisional-version`
+Use this option to provide a custom path to your provisional version. Your custom path is relative to the versions path.
+
+#### `--versions-path`
+Use this option, or `-p` for short, to provide a custom path to your versions.
+This allows you to override the default versions path which is `<project_root>/db/versions`.
+If the path provided is not an absolute path then it is assumed to be relative to the project root.
