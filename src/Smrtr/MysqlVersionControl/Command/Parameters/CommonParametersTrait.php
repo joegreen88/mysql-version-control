@@ -48,7 +48,8 @@ trait CommonParametersTrait
         return $this->addArgument(
             'mysql-bin',
             InputArgument::OPTIONAL,
-            'Where is the MySQL binary located?'
+            'Where is the MySQL binary located?',
+            'mysql'
         );
     }
 

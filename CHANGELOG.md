@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.3.0 (wip)
+## 1.3.0
 
 ### General Improvements
 
@@ -11,6 +11,7 @@ Changelog
  - Added port configuration option
  - Refactor: implemented the command pattern
  - Refactor: implemented the configuration adapter pattern
+ - Added some examples
 
 ### Configuration adapters:
 
@@ -20,7 +21,7 @@ Changelog
 
 ### Up command:
 
- - Option `--provisional-version` is relative to project root if not an absolute path
+ - Option `--versions-path` is relative to project root if not an absolute path
 
 ## 1.2.0
 
